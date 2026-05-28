@@ -1,0 +1,53 @@
+.agenda-card {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Agenda Topics Section */
+.agenda-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Explanation / Analysis Box */
+.explanation-box {
+  padding: var(--space-md);
+  background: rgba(0, 0, 0, 0.2);
+  border-left: 3px solid var(--gold-400);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.section-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.explanation-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold-400);
+}
+.explanation-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}

@@ -1,0 +1,98 @@
+.summary-card {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Quote block */
+.summary-block {
+  position: relative;
+  padding: var(--space-lg) var(--space-xl);
+  background: rgba(167,139,250,0.05);
+  border: 1px solid rgba(167,139,250,0.2);
+  border-radius: var(--radius-md);
+}
+.summary-quote-mark {
+  position: absolute;
+  top: -4px;
+  left: 16px;
+  font-size: 60px;
+  font-family: var(--font-display);
+  color: rgba(167,139,250,0.25);
+  line-height: 1;
+  user-select: none;
+}
+.summary-quote-mark.right {
+  left: unset;
+  right: 16px;
+  top: unset;
+  bottom: -24px;
+}
+.summary-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-primary);
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+/* Key points */
+.keypoints-section { display: flex; flex-direction: column; gap: var(--space-md); }
+.keypoints-list    { display: flex; flex-direction: column; gap: 10px; }
+
+.keypoint-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: 12px 16px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+.keypoint-item:hover {
+  background: var(--bg-glass-hover);
+  border-color: rgba(167,139,250,0.3);
+  transform: translateX(4px);
+}
+.keypoint-num {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent-purple);
+  font-family: var(--font-display);
+  min-width: 26px;
+  padding-top: 2px;
+  letter-spacing: 0.05em;
+}
+.keypoint-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  flex: 1;
+}
+.keypoint-arrow {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--accent-purple);
+  opacity: 0.6;
+}
+.keypoint-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Footer */
+.summary-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border);
+}
+.footer-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
