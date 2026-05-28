@@ -130,11 +130,23 @@ function App() {
 
       <footer className="app-footer">
         <div className="footer-inner section">
-          <p>© 2026 Decoding Leadership Project. Final Year Project.</p>
-          <div className="footer-links">
-            <span className="badge badge-gold">React SPA</span>
-            <span className="badge badge-blue">FastAPI Backend</span>
-            <span className="badge badge-purple">Vosk + LLaMA + Gemma</span>
+          <div className="footer-quote">
+            <span className="footer-quote-mark">&ldquo;</span>
+            <p className="footer-quote-text">
+              Words have the power to shape minds,<br />
+              move nations, and define history.
+            </p>
+            <span className="footer-quote-mark footer-quote-mark--close">&rdquo;</span>
+          </div>
+          <div className="footer-credit">
+            <span className="footer-heart">Made with</span>
+            <span className="footer-heart-emoji">❤️</span>
+            <span className="footer-heart">by</span>
+            <span className="footer-authors">
+              <span className="footer-author">Ameer Hamza</span>
+              <span className="footer-author-sep">&amp;</span>
+              <span className="footer-author">Hanzla Zafar</span>
+            </span>
           </div>
         </div>
       </footer>
