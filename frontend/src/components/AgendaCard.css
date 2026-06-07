@@ -24,6 +24,26 @@
   gap: 8px;
 }
 
+/* Chip variants */
+.chip-topic {
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  color: #c4b5fd;
+}
+.chip-topic:hover {
+  background: rgba(139, 92, 246, 0.28);
+}
+
+.chip-buzz {
+  background: rgba(245, 197, 24, 0.12);
+  border: 1px solid rgba(245, 197, 24, 0.3);
+  color: var(--gold-300);
+  font-size: 12px;
+}
+.chip-buzz:hover {
+  background: rgba(245, 197, 24, 0.22);
+}
+
 /* Explanation / Analysis Box */
 .explanation-box {
   padding: var(--space-md);

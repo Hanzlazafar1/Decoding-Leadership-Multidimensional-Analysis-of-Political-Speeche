@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, GitBranch, CheckSquare, BookOpen, RefreshCw, AlertCircle } from 'lucide-react';
-import { analyzeSentiment, detectAgenda, extractPromises, summarizeSpeech } from '../api/speechApi.js';
+import { classifySpeech, extractPromises, summarizeSpeech } from '../api/speechApi.js';
 import SentimentCard  from './SentimentCard.jsx';
 import AgendaCard     from './AgendaCard.jsx';
 import PromisesCard   from './PromisesCard.jsx';
@@ -9,25 +9,26 @@ import SummaryCard    from './SummaryCard.jsx';
 import LoadingSpinner from './LoadingSpinner.jsx';
 import './ResultsSection.css';
 
+// ── Tab Config ─────────────────────────────────────────────────────────────────
 const TABS = [
-  { id: 'sentiment', label: 'Sentiment',   icon: Activity,    color: 'var(--accent-blue)',   badgeClass: 'badge-blue',   spinnerColor: 'var(--accent-blue)'   },
-  { id: 'agenda',    label: 'Agenda',      icon: GitBranch,   color: 'var(--accent-purple)', badgeClass: 'badge-purple', spinnerColor: 'var(--accent-purple)' },
-  { id: 'promises',  label: 'Promises',    icon: CheckSquare, color: 'var(--accent-green)',  badgeClass: 'badge-green',  spinnerColor: 'var(--accent-green)'  },
-  { id: 'summary',   label: 'Summary',     icon: BookOpen,    color: 'var(--gold-300)',       badgeClass: 'badge-gold',   spinnerColor: 'var(--gold-300)'      },
+  { id: 'sentiment', label: 'Sentiment',  icon: Activity,    color: 'var(--accent-blue)',   apiKey: 'classify' },
+  { id: 'agenda',    label: 'Agenda',     icon: GitBranch,   color: 'var(--accent-purple)', apiKey: 'classify' },
+  { id: 'promises',  label: 'Promises',   icon: CheckSquare, color: 'var(--accent-green)',  apiKey: 'promises' },
+  { id: 'summary',   label: 'Summary',    icon: BookOpen,    color: 'var(--gold-300)',       apiKey: 'summary'  },
 ];
 
+// ── API calls keyed by internal cache key ──────────────────────────────────────
+// /classify is shared for both Sentiment + Agenda tabs (called once, cached)
 const API_MAP = {
-  sentiment: analyzeSentiment,
-  agenda:    detectAgenda,
-  promises:  extractPromises,
-  summary:   summarizeSpeech,
+  classify: classifySpeech,
+  promises: extractPromises,
+  summary:  summarizeSpeech,
 };
 
 const LABELS = {
-  sentiment: 'Running LLaMA sentiment analysis…',
-  agenda:    'Detecting agenda with LLaMA…',
-  promises:  'Extracting promises with Gemma…',
-  summary:   'Summarizing speech with Gemma…',
+  classify: 'Classifying speech with LLaMA 3.2…',
+  promises: 'Extracting promises with Gemma 3…',
+  summary:  'Summarizing speech with Qwen 2.5…',
 };
 
 export default function ResultsSection({ transcript }) {
@@ -36,68 +37,62 @@ export default function ResultsSection({ transcript }) {
   const [loading,   setLoading]   = useState({});
   const [errors,    setErrors]    = useState({});
 
-  const runAnalysis = async (tabId) => {
-    if (results[tabId]) return; // already cached
-    setLoading(prev => ({ ...prev, [tabId]: true }));
-    setErrors(prev => ({ ...prev, [tabId]: null }));
+  const runAnalysis = async (apiKey, forceRun = false) => {
+    if (!forceRun && results[apiKey]) return; // already cached
+    setLoading(prev => ({ ...prev, [apiKey]: true }));
+    setErrors(prev  => ({ ...prev, [apiKey]: null  }));
     try {
-      const data = await API_MAP[tabId](transcript);
-      setResults(prev => ({ ...prev, [tabId]: data }));
+      const data = await API_MAP[apiKey](transcript);
+      setResults(prev => ({ ...prev, [apiKey]: data }));
     } catch (err) {
-      setErrors(prev => ({ ...prev, [tabId]: err.message }));
+      setErrors(prev => ({ ...prev, [apiKey]: err.message }));
     } finally {
-      setLoading(prev => ({ ...prev, [tabId]: false }));
+      setLoading(prev => ({ ...prev, [apiKey]: false }));
     }
   };
 
-  // Run first tab immediately and all in parallel (skipping 'agenda' as it reuses 'sentiment' outputs)
+  // Fire all 3 unique API calls in parallel when transcript is ready
   useEffect(() => {
     if (!transcript) return;
     setResults({});
     setErrors({});
-    TABS.forEach(tab => {
-      if (tab.id !== 'agenda') {
-        runAnalysis(tab.id);
-      }
-    });
+    setLoading({});
+    Object.keys(API_MAP).forEach(key => runAnalysis(key));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transcript]);
 
-  const retry = (tabId) => {
-    const checkTab = tabId === 'agenda' ? 'sentiment' : tabId;
-    setResults(prev => { const n = { ...prev }; delete n[checkTab]; return n; });
-    runAnalysis(checkTab);
+  const retry = (apiKey) => {
+    setResults(prev => { const n = { ...prev }; delete n[apiKey]; return n; });
+    runAnalysis(apiKey, true);
   };
 
   const activeConfig = TABS.find(t => t.id === activeTab);
+  const activeApiKey = activeConfig?.apiKey;
 
   const renderContent = () => {
-    const checkTab = activeTab === 'agenda' ? 'sentiment' : activeTab;
-    const spinnerLabel = activeTab === 'agenda' ? 'Analyzing speech agenda with LLaMA…' : LABELS[activeTab];
-
-    if (loading[checkTab]) {
-      return <LoadingSpinner label={spinnerLabel} color={activeConfig.color} />;
+    if (loading[activeApiKey]) {
+      return <LoadingSpinner label={LABELS[activeApiKey]} color={activeConfig.color} />;
     }
-    if (errors[checkTab]) {
+    if (errors[activeApiKey]) {
       return (
         <motion.div className="tab-error" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <AlertCircle size={24} style={{ color: 'var(--accent-red)' }} />
           <div>
             <p className="tab-error-title">Analysis Failed</p>
-            <p className="tab-error-msg">{errors[checkTab]}</p>
+            <p className="tab-error-msg">{errors[activeApiKey]}</p>
           </div>
-          <button className="btn-secondary" onClick={() => retry(activeTab)}>
+          <button className="btn-secondary" onClick={() => retry(activeApiKey)}>
             <RefreshCw size={14} /> Retry
           </button>
         </motion.div>
       );
     }
-    if (!results[checkTab]) return null;
+    if (!results[activeApiKey]) return null;
 
-    const data = results[checkTab];
+    const data = results[activeApiKey];
     switch (activeTab) {
       case 'sentiment': return <SentimentCard data={data} />;
-      case 'agenda':    return <AgendaCard    data={null} sentimentData={data} />;
+      case 'agenda':    return <AgendaCard    data={data} />;
       case 'promises':  return <PromisesCard  data={data} />;
       case 'summary':   return <SummaryCard   data={data} />;
       default:          return null;
@@ -115,7 +110,7 @@ export default function ResultsSection({ transcript }) {
       >
         <h2 className="results-title">Multidimensional Analysis</h2>
         <p className="results-sub">
-          AI-powered analysis pipelines running in parallel using LLaMA &amp; Gemma language models
+          AI-powered analysis via LLaMA 3.2 · Gemma 3 · Qwen 2.5 running in parallel
         </p>
       </motion.div>
 
@@ -123,9 +118,9 @@ export default function ResultsSection({ transcript }) {
       <div className="tab-bar glass-card">
         {TABS.map((tab) => {
           const Icon    = tab.icon;
-          const isDone  = tab.id === 'agenda' ? !!results.sentiment : !!results[tab.id];
-          const isErr   = tab.id === 'agenda' ? !!errors.sentiment : !!errors[tab.id];
-          const isLoad  = tab.id === 'agenda' ? !!loading.sentiment : !!loading[tab.id];
+          const isDone  = !!results[tab.apiKey];
+          const isErr   = !!errors[tab.apiKey];
+          const isLoad  = !!loading[tab.apiKey];
 
           return (
             <button

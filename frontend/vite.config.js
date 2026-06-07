@@ -6,11 +6,21 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+      // Audio transcription (Vosk)
       '/upload-audio': {
         target: 'http://localhost:8000',
         changeOrigin: true,
       },
-      '/api': {
+      // LLM analysis endpoints — match external API naming exactly
+      '/classify': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
+      '/extract': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
+      '/summarize': {
         target: 'http://localhost:8000',
         changeOrigin: true,
       },

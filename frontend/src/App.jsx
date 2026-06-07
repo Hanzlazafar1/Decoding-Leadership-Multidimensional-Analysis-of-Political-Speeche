@@ -3,21 +3,28 @@ import Navbar from './components/Navbar';
 import AudioUploader from './components/AudioUploader';
 import TranscriptPanel from './components/TranscriptPanel';
 import ResultsSection from './components/ResultsSection';
-import { Shield, Sparkles, Mic, FileText, ChevronRight } from 'lucide-react';
+import { Shield, Sparkles, Mic, FileText, ChevronRight, Type, Send } from 'lucide-react';
 import './App.css';
 
 function App() {
   const [transcript, setTranscript] = useState('');
   const [speechId, setSpeechId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [inputMode, setInputMode] = useState('audio'); // 'audio' | 'text'
+  const [pasteText, setPasteText] = useState('');
 
   const handleTranscript = (text, id) => {
     setTranscript(text);
     setSpeechId(id);
-    // Smooth scroll to the results section after transcript is ready
     setTimeout(() => {
       document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
+  };
+
+  const handlePasteSubmit = () => {
+    const trimmed = pasteText.trim();
+    if (!trimmed) return;
+    handleTranscript(trimmed, 'manual-input');
   };
 
   return (
@@ -61,42 +68,93 @@ function App() {
       {/* Main Workspace Section */}
       <main className="workspace section">
         <div className="workspace-grid">
-          {/* Left panel: Upload and Instructions */}
+          {/* Left panel: Upload/Paste and Instructions */}
           <div className="workspace-left">
             <div className="glass-card instruction-card">
               <h2>Speech Transcription Engine</h2>
-              <p>Upload a clear recording of a political address, press conference, or debate statement. The speech engine will automatically transcribe, compile, and prepare the content for deep LLM analysis.</p>
+              <p>Upload an audio recording or paste a speech transcript directly. The engine will prepare the content for deep LLM analysis.</p>
 
               <div className="workflow-steps">
                 <div className="step-item">
                   <div className="step-number">1</div>
                   <div className="step-detail">
-                    <strong>Audio Input</strong>
-                    <span>Upload your file (.wav, .mp3, .mp4, etc.)</span>
+                    <strong>Audio Input or Text Paste</strong>
+                    <span>Upload an audio file or paste speech text directly</span>
                   </div>
                 </div>
                 <div className="step-item">
                   <div className="step-number">2</div>
                   <div className="step-detail">
                     <strong>Vosk ASR Decode</strong>
-                    <span>Extract word sequences offline</span>
+                    <span>Extract word sequences offline (audio mode)</span>
                   </div>
                 </div>
                 <div className="step-item">
                   <div className="step-number">3</div>
                   <div className="step-detail">
                     <strong>Parallel Analytics</strong>
-                    <span>Feed the text to LLaMA & Gemma models</span>
+                    <span>Feed the text to LLaMA &amp; Gemma models</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <AudioUploader
-              onTranscript={handleTranscript}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-            />
+            {/* Input Mode Toggle */}
+            <div className="input-mode-toggle glass-card">
+              <button
+                id="mode-audio"
+                className={`mode-btn ${inputMode === 'audio' ? 'active' : ''}`}
+                onClick={() => setInputMode('audio')}
+              >
+                <Mic size={15} />
+                Audio Upload
+              </button>
+              <button
+                id="mode-text"
+                className={`mode-btn ${inputMode === 'text' ? 'active' : ''}`}
+                onClick={() => setInputMode('text')}
+              >
+                <Type size={15} />
+                Paste Text
+              </button>
+            </div>
+
+            {inputMode === 'audio' ? (
+              <AudioUploader
+                onTranscript={handleTranscript}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+              />
+            ) : (
+              <div className="paste-panel glass-card" id="paste-input">
+                <div className="paste-header">
+                  <Type size={16} style={{ color: 'var(--accent-purple)' }} />
+                  <span>Paste Speech Text</span>
+                </div>
+                <textarea
+                  id="speech-textarea"
+                  className="paste-textarea"
+                  placeholder="Paste a political speech transcript here… e.g. 'We will invest £20 billion in hospitals by 2027 and train 10,000 new nurses.'"
+                  value={pasteText}
+                  onChange={(e) => setPasteText(e.target.value)}
+                  rows={8}
+                />
+                <div className="paste-footer">
+                  <span className="paste-count">
+                    {pasteText.trim().split(/\s+/).filter(Boolean).length} words
+                  </span>
+                  <button
+                    id="analyze-text-btn"
+                    className="btn-gold paste-submit"
+                    onClick={handlePasteSubmit}
+                    disabled={!pasteText.trim()}
+                  >
+                    <Send size={15} />
+                    Analyze Speech
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right panel: Transcript output */}
@@ -109,9 +167,9 @@ function App() {
                   <FileText size={32} />
                 </div>
                 <h3>Transcript Ready Area</h3>
-                <p>Once you upload and transcribe your speech, the transcribed text and statistics will appear here. The system will then automatically launch the multidimensional analytical dashboards below.</p>
+                <p>Once you upload and transcribe your speech or paste text, it will appear here. The system will then automatically launch the multidimensional analytical dashboards below.</p>
                 <div className="empty-indicator">
-                  <span>Awaiting Speech File</span>
+                  <span>Awaiting Speech Input</span>
                   <ChevronRight size={14} className="bounce-arrow" />
                 </div>
               </div>

@@ -1,9 +1,24 @@
 // ── API Base URL ───────────────────────────────────────────────────────────────
-// In dev, Vite proxy forwards /upload-audio and /api/* to http://localhost:8000
+// In dev, Vite proxy forwards /upload-audio, /classify, /extract, /summarize
+// → http://localhost:8000
 const BASE = '';
 
+// ── Shared fetch helper ────────────────────────────────────────────────────────
+async function postJSON(path, body) {
+  const res = await fetch(`${BASE}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `API error ${res.status}: ${path}`);
+  }
+  return res.json();
+}
+
 /**
- * Upload audio file → returns { speech_id, transcript }
+ * Upload audio file → { speech_id, transcript }
  */
 export async function uploadAudio(file) {
   const form = new FormData();
@@ -20,65 +35,28 @@ export async function uploadAudio(file) {
 }
 
 /**
- * Sentiment analysis → { sentiment, agenda, explanation }
+ * POST /classify
+ * Sentiment + Agenda Classification using LLaMA 3.2 3B (GGUF).
+ * Returns: { sentiment: 'Positive'|'Negative'|'Neutral', agenda: string[], raw_output: string }
  */
-export async function analyzeSentiment(text) {
-  const res = await fetch(`${BASE}/api/sentiment`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text }),
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || `Sentiment API error: ${res.status}`);
-  }
-  return res.json(); // { sentiment, agenda: [], explanation }
+export async function classifySpeech(text) {
+  return postJSON('/classify', { speech: text });
 }
 
 /**
- * Agenda detection → { topics, buzzwords, context }
- */
-export async function detectAgenda(text) {
-  const res = await fetch(`${BASE}/api/agenda`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text }),
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || `Agenda API error: ${res.status}`);
-  }
-  return res.json(); // { topics: [], buzzwords: [], context }
-}
-
-/**
- * Promises & achievements extraction → { promises, achievements }
+ * POST /extract
+ * Promise + Achievement Extraction using Gemma 3 4B (QLoRA).
+ * Returns: { success, promises: string[], achievements: string[], speech_type: string, raw_output: string }
  */
 export async function extractPromises(text) {
-  const res = await fetch(`${BASE}/api/promises`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text }),
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || `Promises API error: ${res.status}`);
-  }
-  return res.json(); // { promises: [], achievements: [] }
+  return postJSON('/extract', { speech: text });
 }
 
 /**
- * Speech summarization → { summary, key_points }
+ * POST /summarize
+ * Speech Summarization using Qwen 2.5 3B (QLoRA).
+ * Returns: { summary: string, key_points: string[] }
  */
 export async function summarizeSpeech(text) {
-  const res = await fetch(`${BASE}/api/summarize`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text }),
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || `Summarize API error: ${res.status}`);
-  }
-  return res.json(); // { summary, key_points: [] }
+  return postJSON('/summarize', { speech: text });
 }

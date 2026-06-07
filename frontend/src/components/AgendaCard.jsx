@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { GitBranch, AlignLeft } from 'lucide-react';
+import { GitBranch, Tag } from 'lucide-react';
 import './AgendaCard.css';
 
-export default function AgendaCard({ data, sentimentData }) {
-  // Use sentimentData agenda/explanation as primary, fall back to topics/context if sentimentData is not loaded yet
-  const topics = sentimentData?.agenda || data?.topics || [];
-  const analysisText = sentimentData?.explanation || data?.context || '';
+export default function AgendaCard({ data }) {
+  // data = /classify result: { sentiment, agenda, raw_output } or legacy fallback
+  const topics      = data?.agenda      || data?.topics || [];
+  const buzzwords   = data?.buzzwords   || [];
 
   return (
     <motion.div
@@ -28,13 +28,13 @@ export default function AgendaCard({ data, sentimentData }) {
 
       {/* Political Agenda Topics */}
       <div className="agenda-section">
-        <p className="section-label">Political Agenda Topics</p>
+        <p className="section-label">Detected Agenda Topics</p>
         <div className="tags-row">
           {topics.length > 0 ? (
             topics.map((item, i) => (
               <motion.span
                 key={i}
-                className="chip"
+                className="chip chip-topic"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.1 * i + 0.2 }}
@@ -49,14 +49,27 @@ export default function AgendaCard({ data, sentimentData }) {
         </div>
       </div>
 
-      {/* Analysis Box */}
-      {analysisText && (
-        <div className="explanation-box">
+      {/* Buzzwords */}
+      {buzzwords.length > 0 && (
+        <div className="agenda-section">
           <div className="section-label-row">
-            <AlignLeft size={13} style={{ color: 'var(--gold-400)' }} />
-            <p className="explanation-label">Analysis</p>
+            <Tag size={13} style={{ color: 'var(--accent-purple)' }} />
+            <p className="section-label">Key Buzzwords</p>
           </div>
-          <p className="explanation-text">{analysisText}</p>
+          <div className="tags-row">
+            {buzzwords.map((word, i) => (
+              <motion.span
+                key={i}
+                className="chip chip-buzz"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.08 * i + 0.3 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                {word}
+              </motion.span>
+            ))}
+          </div>
         </div>
       )}
     </motion.div>
