@@ -1,0 +1,228 @@
+/* ── Aggregated Result (GPT unified) ─────────────────────────── */
+.aggregated-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+/* Top header card */
+.agg-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  border-color: rgba(167, 139, 250, 0.25);
+  flex-wrap: wrap;
+}
+
+.agg-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.agg-gpt-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-purple);
+  align-self: flex-start;
+}
+
+.agg-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.agg-reasoning {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 500px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.agg-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.agg-sentiment-badge {
+  font-size: 13px;
+  padding: 6px 16px;
+}
+
+.agg-type-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: capitalize;
+  letter-spacing: 0.04em;
+}
+
+/* 2-column grid below the header */
+.agg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .agg-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.agg-left,
+.agg-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Inner card */
+.agg-card {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.agg-left > .agg-card:nth-child(1) { z-index: 10; }
+.agg-left > .agg-card:nth-child(2) { z-index: 9; }
+
+
+.agg-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+.agg-card-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Agenda tags row */
+.agg-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  /* Allow dropdowns to overflow the card */
+  overflow: visible;
+  position: relative;
+}
+
+/* Summary */
+.agg-summary-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* Key points */
+.agg-keypoints {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.agg-kp-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+  margin-bottom: 8px;
+}
+
+.agg-kp-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.agg-kp-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.agg-kp-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-300);
+  margin-top: 6px;
+}
+
+/* Promise / Achievement lists */
+.agg-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.agg-list::-webkit-scrollbar { width: 3px; }
+.agg-list::-webkit-scrollbar-track { background: transparent; }
+.agg-list::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
+
+.agg-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.agg-promise { border-left: 3px solid var(--accent-blue); }
+.agg-achievement { border-left: 3px solid var(--accent-green); }
+
+.agg-list-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.agg-promise .agg-list-icon { color: var(--accent-blue); }
+.agg-achievement .agg-list-icon { color: var(--accent-green); }
+
+.agg-empty {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0;
+}

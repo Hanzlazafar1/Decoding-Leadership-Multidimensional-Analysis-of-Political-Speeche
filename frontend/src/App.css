@@ -76,7 +76,7 @@
 /* Feature cards */
 .hero-features {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--space-lg);
   width: 100%;
   max-width: 1200px; /* Stretches to the exact grid boundaries of workspace below */
@@ -117,6 +117,12 @@
   background: rgba(167, 139, 250, 0.08);
   border: 1px solid rgba(167, 139, 250, 0.25);
   color: var(--accent-purple);
+}
+
+.feature-icon-wrap.gold {
+  background: rgba(245, 197, 24, 0.08);
+  border: 1px solid rgba(245, 197, 24, 0.25);
+  color: var(--gold-300);
 }
 
 .feature-card h3 {
@@ -521,5 +527,111 @@
   gap: 7px;
   padding: 10px 20px;
   font-size: 14px;
+}
+
+/* ── Mode Selector (Quick / Full Analysis toggle) ── */
+.mode-selector-wrap {
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-md);
+}
+
+.mode-selector {
+  display: flex;
+  gap: 0;
+  padding: 6px;
+  border-radius: var(--radius-lg);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.mode-selector-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  font-family: var(--font-body);
+  background: transparent;
+  border: none;
+  border-radius: calc(var(--radius-lg) - 4px);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  color: var(--text-muted);
+  text-align: left;
+  position: relative;
+}
+
+.mode-selector-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
+.mode-selector-btn.active {
+  background: rgba(245, 197, 24, 0.08);
+  border: 1px solid rgba(245, 197, 24, 0.2);
+  color: var(--gold-300);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.mode-btn-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.mode-btn-label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.mode-btn-desc {
+  font-size: 11px;
+  opacity: 0.65;
+  font-weight: 400;
+}
+
+.mode-new-badge {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  padding: 1px 7px;
+  background: rgba(167, 139, 250, 0.15);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 100px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--accent-purple);
+  text-transform: uppercase;
+}
+
+/* ── Full Analysis mode info banner ── */
+.full-mode-info {
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-sm);
+  border-color: rgba(167, 139, 250, 0.2);
+}
+
+.full-mode-info-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.full-mode-info-inner strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.full-mode-info-inner p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
 }
 

@@ -24,6 +24,15 @@ export default defineConfig({
         target: 'http://localhost:8000',
         changeOrigin: true,
       },
+      // ── NEW: Chunked SSE analysis + agenda drill-down ──
+      '/analyze-stream': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
+      '/agenda-detail': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
     },
   },
 })

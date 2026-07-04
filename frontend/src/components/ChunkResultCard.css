@@ -1,0 +1,131 @@
+/* ── Chunk Result Card ───────────────────────────────────────── */
+.chunk-card {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-left: 3px solid var(--gold-400);
+}
+
+.chunk-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chunk-label {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.chunk-number {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold-300);
+  font-family: var(--font-body);
+}
+
+.chunk-of {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.chunk-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chunk-sentiment {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.chunk-type {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+  opacity: 0.8;
+}
+
+.chunk-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chunk-row-icon { flex-shrink: 0; }
+
+.chunk-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mini-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  background: rgba(167, 139, 250, 0.08);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent-purple);
+  text-transform: capitalize;
+}
+
+.chunk-counts {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.chunk-count-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.chunk-count-label {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.chunk-count-sep {
+  width: 1px;
+  height: 16px;
+  background: var(--border);
+}
+
+.chunk-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(245, 197, 24, 0.03);
+  border: 1px solid rgba(245, 197, 24, 0.1);
+  border-radius: var(--radius-sm);
+}
+
+.chunk-summary-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}

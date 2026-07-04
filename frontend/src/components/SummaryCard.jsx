@@ -25,11 +25,17 @@ export default function SummaryCard({ data }) {
       </div>
 
       {/* Summary block */}
-      {data.summary && (
+      {data.summary ? (
         <div className="summary-block">
-          <div className="summary-quote-mark">"</div>
+          <div className="summary-quote-mark">&ldquo;</div>
           <p className="summary-text">{data.summary}</p>
-          <div className="summary-quote-mark right">"</div>
+          <div className="summary-quote-mark right">&rdquo;</div>
+        </div>
+      ) : (
+        <div className="summary-block" style={{ opacity: 0.5, textAlign: 'center', padding: '1.5rem 0' }}>
+          <p className="summary-text" style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
+            No summary was returned by the model. Check the backend logs for details.
+          </p>
         </div>
       )}
 
@@ -62,8 +68,8 @@ export default function SummaryCard({ data }) {
 
       {/* Model info footer */}
       <div className="summary-footer">
-        <span className="badge badge-purple">Gemma LLM</span>
-        <span className="footer-label">Powered by Google Gemma via local API</span>
+        <span className="badge badge-purple">Qwen 2.5</span>
+        <span className="footer-label">Powered by Qwen 2.5 3B via local API</span>
       </div>
     </motion.div>
   );

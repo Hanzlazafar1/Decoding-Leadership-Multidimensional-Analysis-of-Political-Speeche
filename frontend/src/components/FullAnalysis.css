@@ -1,0 +1,175 @@
+/* ── Full Analysis Panel ─────────────────────────────────────── */
+.full-analysis {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 100%;
+}
+
+/* Input card */
+.fa-input-card {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.fa-input-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+.fa-chunk-hint {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  border-radius: 100px;
+  color: var(--accent-purple);
+}
+
+.fa-textarea {
+  width: 100%;
+  min-height: 220px;
+  padding: var(--space-md);
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: var(--font-body);
+  line-height: 1.7;
+  resize: vertical;
+  outline: none;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  box-sizing: border-box;
+}
+
+.fa-textarea::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.fa-textarea:focus {
+  border-color: rgba(167, 139, 250, 0.5);
+  box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.12);
+}
+
+.fa-textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fa-input-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fa-meta {
+  display: flex;
+  gap: 12px;
+}
+
+.fa-word-count,
+.fa-char-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.fa-submit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  font-size: 14px;
+}
+
+.fa-spin-icon {
+  display: inline-block;
+  animation: spin-slow 1s linear infinite;
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+/* Error banner */
+.fa-error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
+.fa-error-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-red);
+  margin-bottom: 2px;
+}
+
+.fa-error-msg {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Section headers */
+.fa-section-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.fa-section-badge {
+  padding: 2px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.fa-gpt-badge {
+  background: rgba(167, 139, 250, 0.1);
+  border-color: rgba(167, 139, 250, 0.25);
+  color: var(--accent-purple);
+}
+
+/* Chunk cards grid */
+.fa-chunks-section { display: flex; flex-direction: column; }
+
+.fa-chunks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-md);
+}
+
+/* Final result section */
+.fa-final-section { display: flex; flex-direction: column; }
+
+/* Done row */
+.fa-done-row {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--space-md);
+}
